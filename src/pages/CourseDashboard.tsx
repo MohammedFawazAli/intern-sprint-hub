@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { BookOpen, Clock, PlayCircle, CheckCircle, Filter, Search } from 'lucide-react';
+import { BookOpen, Clock, PlayCircle, CheckCircle, Filter, Search, ArrowLeft } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useCourses } from '@/hooks/useCourses';
@@ -115,13 +115,20 @@ const CourseDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Course Dashboard</h1>
-            <p className="text-gray-600">Enhance your skills with our curated courses</p>
+          <div className="flex items-center">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/home')}
+              className="mr-4 text-gray-600 hover:text-gray-900"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Course Dashboard</h1>
+              <p className="text-gray-600">Enhance your skills with our curated courses</p>
+            </div>
           </div>
-          <Button onClick={() => navigate('/home')} variant="outline">
-            Back to Home
-          </Button>
         </div>
 
         {/* Filters */}
@@ -184,8 +191,12 @@ const CourseDashboard = () => {
                     </Badge>
                     {course.progress && (
                       <Badge className={getStatusColor(course.progress.status)}>
-                        {course.progress.status === 'completed' ? 'Completed' : 
-                         course.progress.status === 'in_progress' ? 'In Progress' : 'Not Started'}
+                        {course.progress.status === 'completed' ? (
+                          <div className="flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3" />
+                            Completed
+                          </div>
+                        ) : course.progress.status === 'in_progress' ? 'In Progress' : 'Not Started'}
                       </Badge>
                     )}
                   </div>
@@ -227,7 +238,7 @@ const CourseDashboard = () => {
                         Start Course
                       </Button>
                     ) : isCompleted ? (
-                      <Button variant="outline" className="flex-1" disabled>
+                      <Button variant="secondary" className="flex-1" disabled>
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Completed
                       </Button>
@@ -241,6 +252,7 @@ const CourseDashboard = () => {
                           onClick={() => handleCompleteCourse(course.id, course.title)}
                           size="sm"
                           disabled={isCompleting}
+                          className="whitespace-nowrap"
                         >
                           {isCompleting ? 'Completing...' : 'Mark Complete'}
                         </Button>
