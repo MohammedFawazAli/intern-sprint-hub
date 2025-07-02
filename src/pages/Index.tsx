@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Briefcase, Users, TrendingUp, CheckCircle, Target, Zap, BarChart3, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import GlobalNavigation from "@/components/GlobalNavigation";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
 import InternshipPreview from "@/components/InternshipPreview";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import BlogSection from "@/components/BlogSection";
 import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
+import EnhancedFooter from "@/components/EnhancedFooter";
+import TrustSection from "@/components/TrustSection";
+import CookieConsent from "@/components/CookieConsent";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -20,8 +23,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
-      {/* Global Navigation */}
-      <GlobalNavigation />
+      {/* Enhanced Navigation */}
+      <EnhancedNavigation />
+      <Breadcrumb />
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-20">
@@ -43,7 +47,7 @@ const Index = () => {
             <Link to="/auth/signup">
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 rounded-lg"
               >
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -53,7 +57,7 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="border-2 border-blue-200 text-blue-600 hover:bg-blue-50 px-8 py-6 text-lg"
+                className="border-2 border-blue-200 text-blue-600 hover:bg-blue-50 px-8 py-6 text-lg rounded-lg"
               >
                 Learn More
               </Button>
@@ -66,10 +70,14 @@ const Index = () => {
               src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=1200&h=600&fit=crop"
               alt="Students working on internships"
               className="mx-auto rounded-2xl shadow-2xl max-w-4xl w-full"
+              loading="lazy"
             />
           </div>
         </div>
       </section>
+
+      {/* Trust Section */}
+      <TrustSection />
 
       {/* Feature Highlights */}
       <section id="features" className="container mx-auto px-4 py-20">
@@ -107,13 +115,13 @@ const Index = () => {
           ].map((feature, index) => (
             <Card 
               key={index}
-              className={`p-8 text-center hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm border-blue-100 ${
+              className={`p-8 text-center hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm border-blue-100 rounded-xl ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 200}ms` }}
             >
               <div className="mb-6 flex justify-center">
-                <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center">
+                <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   {feature.icon}
                 </div>
               </div>
@@ -197,7 +205,7 @@ const Index = () => {
             <Link to="/auth/signup">
               <Button 
                 size="lg"
-                className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 rounded-lg"
               >
                 Create Your Free Account
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -210,8 +218,11 @@ const Index = () => {
       {/* Contact & Support */}
       <ContactSection />
 
-      {/* Footer */}
-      <Footer />
+      {/* Enhanced Footer */}
+      <EnhancedFooter />
+
+      {/* Cookie Consent */}
+      <CookieConsent />
     </div>
   );
 };
