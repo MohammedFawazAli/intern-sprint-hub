@@ -16,6 +16,7 @@ import Home from "./pages/Home";
 import AIAssistant from "./pages/AIAssistant";
 import HiringSessions from "./pages/HiringSessions";
 import HiringSessionDetail from "./pages/HiringSessionDetail";
+import CourseDashboard from "./pages/CourseDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,6 +57,11 @@ const App = () => (
             <Route path="/hiring-sessions/:sessionId" element={
               <ProtectedRoute>
                 <HiringSessionDetail />
+              </ProtectedRoute>
+            } />
+            <Route path="/courses" element={
+              <ProtectedRoute>
+                <CourseDashboard />
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE the CATCH-ALL "*" ROUTE */}

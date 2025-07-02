@@ -89,6 +89,48 @@ export type Database = {
         }
         Relationships: []
       }
+      courses: {
+        Row: {
+          category: string
+          content_url: string | null
+          created_at: string
+          description: string
+          difficulty_level: string
+          estimated_hours: number
+          id: string
+          is_active: boolean
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          content_url?: string | null
+          created_at?: string
+          description: string
+          difficulty_level?: string
+          estimated_hours?: number
+          id?: string
+          is_active?: boolean
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          content_url?: string | null
+          created_at?: string
+          description?: string
+          difficulty_level?: string
+          estimated_hours?: number
+          id?: string
+          is_active?: boolean
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       hiring_sessions: {
         Row: {
           created_at: string
@@ -205,6 +247,107 @@ export type Database = {
         }
         Relationships: []
       }
+      user_badges: {
+        Row: {
+          badge_description: string
+          badge_icon: string
+          badge_name: string
+          badge_type: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_description: string
+          badge_icon: string
+          badge_name: string
+          badge_type: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_description?: string
+          badge_icon?: string
+          badge_name?: string
+          badge_type?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_course_progress: {
+        Row: {
+          completed_at: string | null
+          course_id: string
+          id: string
+          progress_percentage: number
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          course_id: string
+          id?: string
+          progress_percentage?: number
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          course_id?: string
+          id?: string
+          progress_percentage?: number
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_course_progress_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_gamification: {
+        Row: {
+          created_at: string
+          current_level: number
+          id: string
+          level_name: string
+          total_xp: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_level?: number
+          id?: string
+          level_name?: string
+          total_xp?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_level?: number
+          id?: string
+          level_name?: string
+          total_xp?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_profiles: {
         Row: {
           bio: string | null
@@ -262,12 +405,84 @@ export type Database = {
         }
         Relationships: []
       }
+      user_widget_preferences: {
+        Row: {
+          created_at: string
+          id: string
+          is_visible: boolean
+          position: number
+          updated_at: string
+          user_id: string
+          widget_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          position?: number
+          updated_at?: string
+          user_id: string
+          widget_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          position?: number
+          updated_at?: string
+          user_id?: string
+          widget_id?: string
+        }
+        Relationships: []
+      }
+      xp_activities: {
+        Row: {
+          activity_description: string
+          activity_type: string
+          created_at: string
+          id: string
+          user_id: string
+          xp_earned: number
+        }
+        Insert: {
+          activity_description: string
+          activity_type: string
+          created_at?: string
+          id?: string
+          user_id: string
+          xp_earned: number
+        }
+        Update: {
+          activity_description?: string
+          activity_type?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+          xp_earned?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      award_xp: {
+        Args: {
+          user_id_param: string
+          xp_amount: number
+          activity_type_param: string
+          activity_description_param: string
+        }
+        Returns: undefined
+      }
+      calculate_user_level: {
+        Args: { total_xp: number }
+        Returns: {
+          level: number
+          level_name: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

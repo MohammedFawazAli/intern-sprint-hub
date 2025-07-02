@@ -3,7 +3,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
-import { User, MessageSquare, Building, LogOut, Home as HomeIcon, FileText, Briefcase } from 'lucide-react';
+import { User, MessageSquare, Building, LogOut, Home as HomeIcon, FileText, Briefcase, BookOpen, Trophy } from 'lucide-react';
+import GamificationWidget from '@/components/GamificationWidget';
+import QuickStatsWidget from '@/components/QuickStatsWidget';
+import RecentActivityWidget from '@/components/RecentActivityWidget';
 
 const Home = () => {
   const { user, signOut } = useAuth();
@@ -40,6 +43,15 @@ const Home = () => {
       iconColor: 'text-purple-600',
       bgColor: 'bg-purple-50',
       route: '/hiring-sessions'
+    },
+    {
+      id: 'courses',
+      title: 'Course Dashboard',
+      description: 'Enhance your skills with our curated learning courses and track your progress.',
+      icon: BookOpen,
+      iconColor: 'text-orange-600',
+      bgColor: 'bg-orange-50',
+      route: '/courses'
     }
   ];
 
@@ -57,6 +69,12 @@ const Home = () => {
       className: 'border-gray-300 text-gray-700 hover:bg-gray-50'
     },
     {
+      title: 'Take Courses',
+      route: '/courses',
+      variant: 'outline' as const,
+      className: 'border-gray-300 text-gray-700 hover:bg-gray-50'
+    },
+    {
       title: 'Get Career Advice',
       route: '/ai-assistant',
       variant: 'outline' as const,
@@ -70,7 +88,7 @@ const Home = () => {
       <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-white shadow-sm">
         <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
           <div className="flex items-center flex-shrink-0 px-6">
-            <h1 className="text-xl font-bold text-gray-900">CareerHub</h1>
+            <h1 className="text-xl font-bold text-gray-900">InternSprint</h1>
           </div>
           <div className="mt-8 flex-grow flex flex-col">
             <nav className="flex-1 px-4 space-y-2">
@@ -87,6 +105,13 @@ const Home = () => {
               >
                 <Building className="mr-3 h-5 w-5" />
                 Sessions
+              </button>
+              <button
+                onClick={() => navigate('/courses')}
+                className="group flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 w-full text-left"
+              >
+                <BookOpen className="mr-3 h-5 w-5" />
+                Courses
               </button>
               <button
                 onClick={() => navigate('/hiring-sessions')}
@@ -116,7 +141,7 @@ const Home = () => {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Welcome back, {user?.email?.split('@')[0]}!
               </h1>
-              <p className="text-gray-600">What would you like to do today?</p>
+              <p className="text-gray-600">Here's your personalized dashboard</p>
             </div>
             <Button 
               variant="outline" 
@@ -128,8 +153,15 @@ const Home = () => {
             </Button>
           </div>
 
+          {/* Dashboard Widgets */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <GamificationWidget />
+            <QuickStatsWidget />
+            <RecentActivityWidget />
+          </div>
+
           {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {featureCards.map((card) => {
               const IconComponent = card.icon;
               return (
@@ -147,7 +179,7 @@ const Home = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 leading-relaxed">{card.description}</p>
+                    <p className="text-gray-600 leading-relaxed text-sm">{card.description}</p>
                   </CardContent>
                 </Card>
               );
