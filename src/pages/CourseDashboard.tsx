@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -20,6 +19,7 @@ const CourseDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterDifficulty, setFilterDifficulty] = useState('all');
+  const [completingCourses, setCompletingCourses] = useState<Set<string>>(new Set());
 
   const handleStartCourse = async (courseId: string, courseTitle: string) => {
     await startCourse(courseId);
@@ -31,12 +31,37 @@ const CourseDashboard = () => {
   };
 
   const handleCompleteCourse = async (courseId: string, courseTitle: string) => {
-    await updateProgress(courseId, 100);
-    await awardXP(50, 'course_completion', `Completed course: ${courseTitle}`);
-    toast({
-      title: "Course Completed!",
-      description: `Congratulations! You completed "${courseTitle}" and earned 50 XP!`,
-    });
+    // Prevent multiple completions by checking if already completing or completed
+    const course = courses.find(c => c.id === courseId);
+    if (!course || course.progress?.status === 'completed' || completingCourses.has(courseId)) {
+      return;
+    }
+
+    // Add to completing set to prevent double-clicking
+    setCompletingCourses(prev => new Set([...prev, courseId]));
+
+    try {
+      await updateProgress(courseId, 100);
+      await awardXP(50, 'course_completion', `Completed course: ${courseTitle}`);
+      toast({
+        title: "Course Completed!",
+        description: `Congratulations! You completed "${courseTitle}" and earned 50 XP!`,
+      });
+    } catch (error) {
+      console.error('Error completing course:', error);
+      toast({
+        title: "Error",
+        description: "Failed to complete course. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      // Remove from completing set after completion attempt
+      setCompletingCourses(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(courseId);
+        return newSet;
+      });
+    }
   };
 
   const filteredCourses = courses.filter(course => {
@@ -146,80 +171,86 @@ const CourseDashboard = () => {
 
         {/* Courses Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCourses.map((course) => (
-            <Card key={course.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex justify-between items-start mb-2">
-                  <Badge className={getDifficultyColor(course.difficulty_level)}>
-                    {course.difficulty_level}
-                  </Badge>
-                  {course.progress && (
-                    <Badge className={getStatusColor(course.progress.status)}>
-                      {course.progress.status === 'completed' ? 'Completed' : 
-                       course.progress.status === 'in_progress' ? 'In Progress' : 'Not Started'}
+          {filteredCourses.map((course) => {
+            const isCompleted = course.progress?.status === 'completed';
+            const isCompleting = completingCourses.has(course.id);
+            
+            return (
+              <Card key={course.id} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex justify-between items-start mb-2">
+                    <Badge className={getDifficultyColor(course.difficulty_level)}>
+                      {course.difficulty_level}
                     </Badge>
-                  )}
-                </div>
-                <CardTitle className="text-lg leading-tight">{course.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                  {course.description}
-                </p>
-                
-                <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    {course.estimated_hours}h
+                    {course.progress && (
+                      <Badge className={getStatusColor(course.progress.status)}>
+                        {course.progress.status === 'completed' ? 'Completed' : 
+                         course.progress.status === 'in_progress' ? 'In Progress' : 'Not Started'}
+                      </Badge>
+                    )}
                   </div>
-                  <div className="flex items-center gap-1">
-                    <BookOpen className="w-4 h-4" />
-                    {course.category}
-                  </div>
-                </div>
-
-                {course.progress && (
-                  <div className="mb-4">
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Progress</span>
-                      <span>{course.progress.progress_percentage}%</span>
+                  <CardTitle className="text-lg leading-tight">{course.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                    {course.description}
+                  </p>
+                  
+                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      {course.estimated_hours}h
                     </div>
-                    <Progress value={course.progress.progress_percentage} className="h-2" />
+                    <div className="flex items-center gap-1">
+                      <BookOpen className="w-4 h-4" />
+                      {course.category}
+                    </div>
                   </div>
-                )}
 
-                <div className="flex gap-2">
-                  {!course.progress ? (
-                    <Button 
-                      onClick={() => handleStartCourse(course.id, course.title)}
-                      className="flex-1"
-                    >
-                      <PlayCircle className="w-4 h-4 mr-2" />
-                      Start Course
-                    </Button>
-                  ) : course.progress.status === 'completed' ? (
-                    <Button variant="outline" className="flex-1" disabled>
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Completed
-                    </Button>
-                  ) : (
-                    <>
-                      <Button variant="outline" className="flex-1">
-                        <PlayCircle className="w-4 h-4 mr-2" />
-                        Continue
-                      </Button>
-                      <Button 
-                        onClick={() => handleCompleteCourse(course.id, course.title)}
-                        size="sm"
-                      >
-                        Mark Complete
-                      </Button>
-                    </>
+                  {course.progress && (
+                    <div className="mb-4">
+                      <div className="flex justify-between text-sm mb-1">
+                        <span>Progress</span>
+                        <span>{course.progress.progress_percentage}%</span>
+                      </div>
+                      <Progress value={course.progress.progress_percentage} className="h-2" />
+                    </div>
                   )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                  <div className="flex gap-2">
+                    {!course.progress ? (
+                      <Button 
+                        onClick={() => handleStartCourse(course.id, course.title)}
+                        className="flex-1"
+                      >
+                        <PlayCircle className="w-4 h-4 mr-2" />
+                        Start Course
+                      </Button>
+                    ) : isCompleted ? (
+                      <Button variant="outline" className="flex-1" disabled>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Completed
+                      </Button>
+                    ) : (
+                      <>
+                        <Button variant="outline" className="flex-1">
+                          <PlayCircle className="w-4 h-4 mr-2" />
+                          Continue
+                        </Button>
+                        <Button 
+                          onClick={() => handleCompleteCourse(course.id, course.title)}
+                          size="sm"
+                          disabled={isCompleting}
+                        >
+                          {isCompleting ? 'Completing...' : 'Mark Complete'}
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {filteredCourses.length === 0 && (
