@@ -37,16 +37,6 @@ const InternshipPreview = () => {
       duration: "4 months",
       tags: ["Python", "Machine Learning", "SQL"],
       logo: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=100&h=100&fit=crop&crop=center"
-    },
-    {
-      id: 4,
-      title: "UX Design Intern",
-      company: "DesignFirst",
-      location: "Los Angeles, CA",
-      type: "Remote",
-      duration: "3 months",
-      tags: ["Figma", "User Research", "Prototyping"],
-      logo: "https://images.unsplash.com/photo-1558655146-d09347e92766?w=100&h=100&fit=crop&crop=center"
     }
   ];
 
@@ -102,8 +92,8 @@ const InternshipPreview = () => {
           </div>
         </div>
 
-        {/* Featured Internships Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 mb-12">
+        {/* Featured Internships Grid - Limited to 3 cards */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
           {featuredInternships.map((internship) => (
             <Card key={internship.id} className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm">
               <CardHeader className="pb-3">

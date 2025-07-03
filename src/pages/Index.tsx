@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, Briefcase, Users, TrendingUp, CheckCircle, Target, Zap, BarChart3, Heart } from "lucide-react";
+import { ArrowRight, Briefcase, Users, TrendingUp, CheckCircle, Target, Zap, BarChart3, UserPlus, Search, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 import EnhancedNavigation from "@/components/EnhancedNavigation";
 import InternshipPreview from "@/components/InternshipPreview";
@@ -27,7 +27,7 @@ const Index = () => {
       <EnhancedNavigation />
       <Breadcrumb />
 
-      {/* Hero Section */}
+      {/* Hero Section with 3-step visual */}
       <section className="container mx-auto px-4 py-20">
         <div className={`text-center space-y-8 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
@@ -39,8 +39,35 @@ const Index = () => {
               <span className="text-blue-500">Internship Journey</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Connect with top companies, manage applications, and accelerate your career growth with InternSprint's comprehensive internship platform. Join thousands of students who've transformed their careers.
+              Connect with top companies, manage applications, and accelerate your career growth with InternSprint's comprehensive internship platform.
             </p>
+          </div>
+
+          {/* 3-Step Process Visual */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <div className="grid md:grid-cols-3 gap-8 mt-12">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <UserPlus className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Create Profile</h3>
+                <p className="text-gray-600">Build your professional profile with skills and preferences</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Get Matched</h3>
+                <p className="text-gray-600">Our AI finds internships that align with your goals</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Send className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Apply</h3>
+                <p className="text-gray-600">Submit applications and track your progress</p>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -76,17 +103,43 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Trust Section */}
-      <TrustSection />
+      {/* Key Metrics with icons and horizontal layout */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-blue-600 mr-3" />
+                <div className="text-4xl font-bold text-blue-600">50,000+</div>
+              </div>
+              <div className="text-gray-600 font-medium">Students Placed</div>
+            </div>
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-4">
+                <Briefcase className="w-8 h-8 text-blue-600 mr-3" />
+                <div className="text-4xl font-bold text-blue-600">2,500+</div>
+              </div>
+              <div className="text-gray-600 font-medium">Partner Companies</div>
+            </div>
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-4">
+                <TrendingUp className="w-8 h-8 text-blue-600 mr-3" />
+                <div className="text-4xl font-bold text-blue-600">95%</div>
+              </div>
+              <div className="text-gray-600 font-medium">Success Rate</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Feature Highlights */}
+      {/* Core Features - 4-icon grid */}
       <section id="features" className="container mx-auto px-4 py-20">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">
             Everything You Need to Succeed
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Our comprehensive platform provides all the tools and insights you need to land your dream internship and accelerate your career growth.
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Our comprehensive platform provides all the tools you need to land your dream internship.
           </p>
         </div>
 
@@ -94,41 +147,41 @@ const Index = () => {
           {[
             {
               icon: <Target className="w-12 h-12 text-blue-500" />,
-              title: "Smart Application Tracking",
-              description: "Keep track of all your internship applications with our intuitive dashboard. Never miss a deadline or follow-up again."
+              title: "Application Tracking",
+              description: "Keep track of all your internship applications with our intuitive dashboard."
             },
             {
               icon: <Users className="w-12 h-12 text-blue-500" />,
-              title: "Company Matchmaking Engine",
-              description: "Our AI-powered system matches you with companies that align with your skills, interests, and career goals."
+              title: "Smart Matchmaking",
+              description: "AI-powered system matches you with companies that align with your goals."
             },
             {
               icon: <BarChart3 className="w-12 h-12 text-blue-500" />,
-              title: "Career Growth Analytics",
-              description: "Track your progress with detailed analytics and get personalized recommendations to improve your profile."
+              title: "Career Analytics",
+              description: "Track your progress with detailed analytics and personalized recommendations."
             },
             {
               icon: <Zap className="w-12 h-12 text-blue-500" />,
-              title: "Personalized Recommendations",
-              description: "Discover internships and companies you never knew existed with our smart recommendation engine."
+              title: "Smart Recommendations",
+              description: "Discover internships and companies with our recommendation engine."
             }
           ].map((feature, index) => (
             <Card 
               key={index}
-              className={`p-8 text-center hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm border-blue-100 rounded-xl ${
+              className={`p-6 text-center hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm border-blue-100 rounded-xl ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 200}ms` }}
             >
-              <div className="mb-6 flex justify-center">
-                <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="mb-4 flex justify-center">
+                <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center">
                   {feature.icon}
                 </div>
               </div>
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+              <h3 className="text-xl font-semibold text-gray-800 mb-3">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 text-sm leading-relaxed">
                 {feature.description}
               </p>
             </Card>
@@ -136,52 +189,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Internship Preview Section */}
+      {/* Simplified Internship Preview */}
       <InternshipPreview />
 
-      {/* Success Stories / Testimonials */}
+      {/* Simplified Testimonials */}
       <TestimonialsSection />
 
-      {/* Blog & Resources Teaser */}
+      {/* Blog Section */}
       <BlogSection />
-
-      {/* About Section */}
-      <section id="about" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center space-x-2 mb-6">
-              <Heart className="w-8 h-8 text-blue-600" />
-              <h2 className="text-4xl font-bold text-gray-800">About InternSprint</h2>
-            </div>
-            
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Founded by former students who understand the challenges of finding the perfect internship, 
-              InternSprint is dedicated to bridging the gap between ambitious students and innovative companies.
-            </p>
-            
-            <div className="grid md:grid-cols-3 gap-8 mt-12">
-              <div className="text-center">
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">Our Mission</h3>
-                <p className="text-gray-600">
-                  To democratize access to internship opportunities and empower the next generation of professionals.
-                </p>
-              </div>
-              <div className="text-center">
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">Our Vision</h3>
-                <p className="text-gray-600">
-                  A world where every student has access to meaningful internship experiences that shape their career.
-                </p>
-              </div>
-              <div className="text-center">
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">Our Values</h3>
-                <p className="text-gray-600">
-                  Innovation, transparency, student-first approach, and building lasting relationships.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Call-to-Action Banner */}
       <section className="bg-gradient-to-r from-blue-500 to-blue-600 py-20">
@@ -195,7 +210,7 @@ const Index = () => {
               Start your journey today and unlock opportunities you never knew existed.
             </p>
             <div className="flex items-center justify-center space-x-6 text-blue-100 mb-8 flex-wrap">
-              {["Free to start", "No credit card required", "Instant setup", "24/7 support"].map((benefit, index) => (
+              {["Free to start", "No credit card required", "Instant setup"].map((benefit, index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5" />
                   <span>{benefit}</span>
@@ -215,10 +230,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact & Support */}
+      {/* Contact Section */}
       <ContactSection />
 
-      {/* Enhanced Footer */}
+      {/* Simplified Footer */}
       <EnhancedFooter />
 
       {/* Cookie Consent */}
