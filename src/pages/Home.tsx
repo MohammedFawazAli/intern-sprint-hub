@@ -1,12 +1,13 @@
-
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { User, MessageSquare, Building, LogOut, Home as HomeIcon, FileText, Briefcase, BookOpen, Trophy } from 'lucide-react';
-import GamificationWidget from '@/components/GamificationWidget';
+import EnhancedGamificationWidget from '@/components/EnhancedGamificationWidget';
 import QuickStatsWidget from '@/components/QuickStatsWidget';
 import RecentActivityWidget from '@/components/RecentActivityWidget';
+import PersonalizedRecommendations from '@/components/PersonalizedRecommendations';
+import PersonalizedStats from '@/components/PersonalizedStats';
 
 const Home = () => {
   const { user, signOut } = useAuth();
@@ -153,11 +154,16 @@ const Home = () => {
             </Button>
           </div>
 
-          {/* Dashboard Widgets */}
+          {/* Enhanced Dashboard Widgets */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <GamificationWidget />
-            <QuickStatsWidget />
+            <EnhancedGamificationWidget />
+            <PersonalizedStats />
             <RecentActivityWidget />
+          </div>
+
+          {/* Personalized Recommendations */}
+          <div className="mb-8">
+            <PersonalizedRecommendations />
           </div>
 
           {/* Feature Cards */}
