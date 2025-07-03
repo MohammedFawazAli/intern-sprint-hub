@@ -1,6 +1,5 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Star, Quote } from "lucide-react";
 
 const TestimonialsSection = () => {
@@ -57,17 +56,16 @@ const TestimonialsSection = () => {
           {testimonials.map((testimonial) => (
             <Card key={testimonial.id} className="h-full hover:shadow-lg transition-shadow duration-300">
               <CardContent className="p-6">
-                <div className="flex items-center mb-4">
-                  <Quote className="w-8 h-8 text-blue-500 mb-4" />
+                <div className="flex items-start justify-between mb-4">
+                  <Quote className="w-8 h-8 text-blue-500 flex-shrink-0" />
+                  <div className="flex items-center ml-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
                 </div>
                 
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                
-                <p className="text-gray-700 mb-6 leading-relaxed">
+                <p className="text-gray-700 mb-6 leading-relaxed text-sm">
                   "{testimonial.quote}"
                 </p>
                 
@@ -78,10 +76,10 @@ const TestimonialsSection = () => {
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div>
-                    <div className="font-semibold text-gray-800">
+                    <div className="font-semibold text-gray-800 text-sm">
                       {testimonial.name}
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-xs text-gray-600">
                       {testimonial.role}
                     </div>
                   </div>

@@ -22,18 +22,42 @@ const CourseDashboard = () => {
   const [completingCourses, setCompletingCourses] = useState<Set<string>>(new Set());
 
   const handleStartCourse = async (courseId: string, courseTitle: string) => {
-    await startCourse(courseId);
-    await awardXP(10, 'course_started', `Started course: ${courseTitle}`);
-    toast({
-      title: "Course Started!",
-      description: `You've started "${courseTitle}" and earned 10 XP!`,
-    });
+    try {
+      await startCourse(courseId);
+      await awardXP(10, 'course_started', `Started course: ${courseTitle}`);
+      toast({
+        title: "Course Started!",
+        description: `You've started "${courseTitle}" and earned 10 XP!`,
+      });
+    } catch (error) {
+      console.error('Failed to start course:', error);
+      toast({
+        title: "Error",
+        description: "Failed to start course. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleCompleteCourse = async (courseId: string, courseTitle: string) => {
     // Prevent multiple completions by checking if already completing or completed
     const course = courses.find(c => c.id === courseId);
-    if (!course || course.progress?.status === 'completed' || completingCourses.has(courseId)) {
+    if (!course) {
+      console.error('Course not found:', courseId);
+      return;
+    }
+
+    if (course.progress?.status === 'completed') {
+      console.log('Course already completed:', courseId);
+      toast({
+        title: "Already Completed",
+        description: "This course has already been completed.",
+      });
+      return;
+    }
+
+    if (completingCourses.has(courseId)) {
+      console.log('Course completion already in progress:', courseId);
       return;
     }
 
@@ -41,8 +65,13 @@ const CourseDashboard = () => {
     setCompletingCourses(prev => new Set([...prev, courseId]));
 
     try {
-      await updateProgress(courseId, 100);
+      console.log('Attempting to complete course:', courseId, courseTitle);
+      
+      const result = await updateProgress(courseId, 100);
+      console.log('Course completion result:', result);
+      
       await awardXP(50, 'course_completion', `Completed course: ${courseTitle}`);
+      
       toast({
         title: "Course Completed!",
         description: `Congratulations! You completed "${courseTitle}" and earned 50 XP!`,

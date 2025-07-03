@@ -41,6 +41,8 @@ export const useCourses = () => {
     if (!user) return;
 
     try {
+      console.log('Fetching courses for user:', user.id);
+      
       // Fetch all active courses
       const { data: coursesData, error: coursesError } = await supabase
         .from('courses')
@@ -53,6 +55,8 @@ export const useCourses = () => {
         return;
       }
 
+      console.log('Courses fetched:', coursesData?.length || 0);
+
       // Fetch user progress for all courses
       const { data: progressData, error: progressError } = await supabase
         .from('user_course_progress')
@@ -61,6 +65,8 @@ export const useCourses = () => {
 
       if (progressError) {
         console.error('Error fetching course progress:', progressError);
+      } else {
+        console.log('Course progress fetched:', progressData?.length || 0);
       }
 
       // Combine courses with progress data
@@ -69,6 +75,7 @@ export const useCourses = () => {
         progress: progressData?.find(p => p.course_id === course.id)
       })) || [];
 
+      console.log('Combined courses with progress:', coursesWithProgress);
       setCourses(coursesWithProgress);
     } catch (error) {
       console.error('Error in fetchCourses:', error);
@@ -81,7 +88,9 @@ export const useCourses = () => {
     if (!user) return;
 
     try {
-      const { error } = await supabase
+      console.log('Starting course:', courseId, 'for user:', user.id);
+      
+      const { data, error } = await supabase
         .from('user_course_progress')
         .upsert({
           user_id: user.id,
@@ -89,16 +98,21 @@ export const useCourses = () => {
           status: 'in_progress',
           progress_percentage: 0,
           started_at: new Date().toISOString()
-        });
+        }, {
+          onConflict: 'user_id,course_id'
+        })
+        .select();
 
       if (error) {
         console.error('Error starting course:', error);
-        return;
+        throw error;
       }
 
+      console.log('Course started successfully:', data);
       await fetchCourses();
     } catch (error) {
       console.error('Error in startCourse:', error);
+      throw error;
     }
   };
 
@@ -106,6 +120,8 @@ export const useCourses = () => {
     if (!user) return;
 
     try {
+      console.log('Updating progress for course:', courseId, 'to', progressPercentage + '%');
+      
       const isCompleted = progressPercentage >= 100;
       const updateData: any = {
         user_id: user.id,
@@ -119,18 +135,26 @@ export const useCourses = () => {
         updateData.completed_at = new Date().toISOString();
       }
 
-      const { error } = await supabase
+      console.log('Update data:', updateData);
+
+      const { data, error } = await supabase
         .from('user_course_progress')
-        .upsert(updateData);
+        .upsert(updateData, {
+          onConflict: 'user_id,course_id'
+        })
+        .select();
 
       if (error) {
         console.error('Error updating progress:', error);
-        return;
+        throw error;
       }
 
+      console.log('Progress updated successfully:', data);
       await fetchCourses();
+      return data;
     } catch (error) {
       console.error('Error in updateProgress:', error);
+      throw error;
     }
   };
 
