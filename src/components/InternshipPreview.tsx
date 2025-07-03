@@ -92,43 +92,43 @@ const InternshipPreview = () => {
           </div>
         </div>
 
-        {/* Featured Internships Grid - Limited to 3 cards */}
+        {/* Featured Internships Grid - Fixed alignment */}
         <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
           {featuredInternships.map((internship) => (
-            <Card key={internship.id} className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm">
+            <Card key={internship.id} className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm flex flex-col h-full">
               <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center space-x-3">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center space-x-3 flex-1">
                     <img
                       src={internship.logo}
                       alt={`${internship.company} logo`}
-                      className="w-12 h-12 rounded-lg object-cover"
+                      className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                     />
-                    <div>
-                      <CardTitle className="text-xl text-gray-800 mb-1">
+                    <div className="min-w-0 flex-1">
+                      <CardTitle className="text-xl text-gray-800 mb-1 line-clamp-2">
                         {internship.title}
                       </CardTitle>
                       <div className="flex items-center space-x-1 text-gray-600">
-                        <Building2 className="w-4 h-4" />
-                        <span className="font-medium">{internship.company}</span>
+                        <Building2 className="w-4 h-4 flex-shrink-0" />
+                        <span className="font-medium truncate">{internship.company}</span>
                       </div>
                     </div>
                   </div>
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                  <Badge variant="secondary" className="bg-blue-100 text-blue-700 flex-shrink-0 ml-2">
                     {internship.type}
                   </Badge>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="flex-1 flex flex-col">
+                <div className="space-y-4 flex-1">
                   <div className="flex items-center justify-between text-sm text-gray-600">
-                    <div className="flex items-center space-x-1">
-                      <MapPin className="w-4 h-4" />
-                      <span>{internship.location}</span>
+                    <div className="flex items-center space-x-1 flex-1">
+                      <MapPin className="w-4 h-4 flex-shrink-0" />
+                      <span className="truncate">{internship.location}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 flex-shrink-0 ml-2">
                       <Clock className="w-4 h-4" />
-                      <span>{internship.duration}</span>
+                      <span className="whitespace-nowrap">{internship.duration}</span>
                     </div>
                   </div>
                   
@@ -139,11 +139,11 @@ const InternshipPreview = () => {
                       </Badge>
                     ))}
                   </div>
-                  
-                  <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white">
-                    View Details
-                  </Button>
                 </div>
+                
+                <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white mt-4">
+                  View Details
+                </Button>
               </CardContent>
             </Card>
           ))}
