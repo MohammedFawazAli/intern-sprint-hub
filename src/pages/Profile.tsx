@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User, ArrowRight } from "lucide-react";
+import { User, ArrowRight, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -175,8 +174,20 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 p-4">
       <div className="max-w-2xl mx-auto">
+        {/* Back Button */}
+        <div className="mb-6 pt-8">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/home')}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 border-gray-300 hover:bg-gray-50"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Dashboard
+          </Button>
+        </div>
+
         {/* Header */}
-        <div className="text-center mb-8 pt-8">
+        <div className="text-center mb-8">
           <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-10 h-10 text-white" />
           </div>

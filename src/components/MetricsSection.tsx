@@ -3,15 +3,11 @@ import { useState, useEffect } from "react";
 import { Users, Briefcase, TrendingUp } from "lucide-react";
 
 const MetricsSection = () => {
-  const [currentMetric, setCurrentMetric] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Animate metrics
-    const interval = setInterval(() => {
-      setCurrentMetric((prev) => (prev + 1) % 3);
-    }, 3000);
-    
-    return () => clearInterval(interval);
+    // Simple visibility trigger instead of cycling animation
+    setIsVisible(true);
   }, []);
 
   const metrics = [
@@ -26,23 +22,19 @@ const MetricsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {metrics.map((metric, index) => {
             const IconComponent = metric.icon;
-            const isActive = currentMetric === index;
             return (
               <div 
                 key={index}
-                className={`text-center transition-all duration-500 transform ${
-                  isActive ? 'scale-110' : 'scale-100'
+                className={`text-center transition-all duration-700 transform ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}
+                style={{ transitionDelay: `${index * 200}ms` }}
               >
-                <div className={`flex items-center justify-center mb-4 transition-all duration-300 ${
-                  isActive ? 'animate-pulse' : ''
-                }`}>
+                <div className="flex items-center justify-center mb-4">
                   <div className={`w-12 h-12 bg-gradient-to-br from-${metric.color.split('-')[1]}-100 to-${metric.color.split('-')[1]}-200 rounded-full flex items-center justify-center mr-3`}>
                     <IconComponent className={`w-6 h-6 ${metric.color}`} />
                   </div>
-                  <div className={`text-4xl font-bold ${metric.color} transition-all duration-300 ${
-                    isActive ? 'scale-110' : ''
-                  }`}>
+                  <div className={`text-4xl font-bold ${metric.color}`}>
                     {metric.value}
                   </div>
                 </div>
