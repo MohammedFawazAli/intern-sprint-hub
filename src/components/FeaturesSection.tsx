@@ -12,25 +12,25 @@ const FeaturesSection = () => {
 
   const features = [
     {
-      icon: <Target className="w-12 h-12 text-blue-500" />,
+      icon: <Target className="w-14 h-14 text-white" />,
       title: "Application Tracking",
       description: "Keep track of all your internship applications with our intuitive dashboard.",
       gradient: "from-blue-500 to-cyan-500"
     },
     {
-      icon: <Users className="w-12 h-12 text-green-500" />,
+      icon: <Users className="w-14 h-14 text-white" />,
       title: "Smart Matchmaking",
       description: "AI-powered system matches you with companies that align with your goals.",
       gradient: "from-green-500 to-emerald-500"
     },
     {
-      icon: <BarChart3 className="w-12 h-12 text-purple-500" />,
+      icon: <BarChart3 className="w-14 h-14 text-white" />,
       title: "Career Analytics",
       description: "Track your progress with detailed analytics and personalized recommendations.",
       gradient: "from-purple-500 to-pink-500"
     },
     {
-      icon: <Zap className="w-12 h-12 text-orange-500" />,
+      icon: <Zap className="w-14 h-14 text-white" />,
       title: "Smart Recommendations",
       description: "Discover internships and companies with our recommendation engine.",
       gradient: "from-orange-500 to-red-500"
@@ -62,7 +62,7 @@ const FeaturesSection = () => {
             style={{ transitionDelay: `${index * 200}ms` }}
           >
             <div className="mb-4 flex justify-center">
-              <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+              <div className={`w-20 h-20 bg-gradient-to-br ${feature.gradient} rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                 {feature.icon}
               </div>
             </div>
